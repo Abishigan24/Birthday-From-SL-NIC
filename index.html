@@ -1,878 +1,705 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sri Lanka NIC Birthday Extractor</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        * {
-            font-family: 'Poppins', sans-serif;
-        }
-
-        body {
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-            min-height: 100vh;
-            padding: 40px 0;
-            position: relative;
-            overflow-x: hidden;
-        }
-
-        /* Animated background elements */
-        body::before {
-            content: '';
-            position: absolute;
-            width: 300px;
-            height: 300px;
-            background: radial-gradient(circle, rgba(230, 0, 122, 0.3) 0%, transparent 70%);
-            top: -100px;
-            right: -100px;
-            border-radius: 50%;
-            animation: float 20s infinite ease-in-out;
-        }
-
-        body::after {
-            content: '';
-            position: absolute;
-            width: 400px;
-            height: 400px;
-            background: radial-gradient(circle, rgba(0, 150, 255, 0.2) 0%, transparent 70%);
-            bottom: -150px;
-            left: -150px;
-            border-radius: 50%;
-            animation: float 25s infinite ease-in-out reverse;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            33% { transform: translate(30px, -30px) scale(1.05); }
-            66% { transform: translate(-20px, 20px) scale(0.95); }
-        }
-
-        .container {
-            position: relative;
-            z-index: 10;
-            max-width: 900px;
-        }
-
-        /* Header Styles */
-        .main-header {
-            text-align: center;
-            margin-bottom: 40px;
-            animation: slideDown 0.8s ease-out;
-        }
-
-        @keyframes slideDown {
-            from { opacity: 0; transform: translateY(-30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .flag-stripe {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 20px;
-        }
-
-        .flag-stripe span {
-            width: 80px;
-            height: 8px;
-            margin: 0 3px;
-            border-radius: 10px;
-        }
-
-        .flag-maroon { background: #8D1B3D; }
-        .flag-orange { background: #FF8200; }
-        .flag-green { background: #00534E; }
-        .flag-yellow { background: #FFD700; }
-
-        .main-header h1 {
-            color: white;
-            font-weight: 700;
-            font-size: 2.8rem;
-            text-shadow: 3px 3px 0px rgba(0,0,0,0.2);
-            letter-spacing: 1px;
-        }
-
-        .main-header p {
-            color: rgba(255,255,255,0.8);
-            font-size: 1.1rem;
-            margin-top: 10px;
-        }
-
-        .lion-icon {
-            font-size: 2rem;
-            margin: 0 10px;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); opacity: 0.8; }
-            50% { transform: scale(1.1); opacity: 1; }
-        }
-
-        /* Card Styles */
-        .card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border: none;
-            border-radius: 30px;
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
-            overflow: hidden;
-            animation: fadeInUp 0.8s ease-out;
-            margin-bottom: 30px;
-        }
-
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .card-header {
-            background: linear-gradient(135deg, #8D1B3D 0%, #C41E3A 50%, #FF6B35 100%);
-            padding: 30px 30px 20px;
-            border: none;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .card-header::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -20%;
-            width: 200px;
-            height: 200px;
-            background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%);
-            border-radius: 50%;
-        }
-
-        .card-header h3 {
-            color: white;
-            font-weight: 600;
-            margin: 0;
-            font-size: 1.8rem;
-        }
-
-        .card-header i {
-            margin-right: 12px;
-            color: #FFD700;
-        }
-
-        .card-body {
-            padding: 35px;
-        }
-
-        /* Form Styles */
-        .nic-input-wrapper {
-            position: relative;
-            margin-bottom: 25px;
-        }
-
-        .nic-input-wrapper .input-icon {
-            position: absolute;
-            left: 18px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #8D1B3D;
-            font-size: 1.3rem;
-            z-index: 10;
-        }
-
-        .form-control {
-            border-radius: 60px;
-            padding: 16px 20px 16px 55px;
-            font-size: 1.2rem;
-            border: 2px solid #e0e0e0;
-            transition: all 0.3s ease;
-            background: white;
-            font-weight: 500;
-            letter-spacing: 1px;
-        }
-
-        .form-control:focus {
-            border-color: #C41E3A;
-            box-shadow: 0 5px 20px rgba(196, 30, 58, 0.2);
-            transform: translateY(-2px);
-        }
-
-        .form-control::placeholder {
-            color: #aaa;
-            font-weight: 300;
-            letter-spacing: 0;
-        }
-
-        .btn-extract {
-            background: linear-gradient(135deg, #8D1B3D 0%, #C41E3A 100%);
-            border: none;
-            border-radius: 60px;
-            padding: 16px 30px;
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: white;
-            width: 100%;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 20px rgba(141, 27, 61, 0.4);
-            position: relative;
-            overflow: hidden;
-            cursor: pointer;
-        }
-
-        .btn-extract::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-            transition: left 0.5s;
-        }
-
-        .btn-extract:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 30px rgba(141, 27, 61, 0.5);
-            color: white;
-        }
-
-        .btn-extract:hover::before {
-            left: 100%;
-        }
-
-        .btn-extract i {
-            margin-right: 10px;
-        }
-
-        /* Info Cards */
-        .info-row {
-            display: flex;
-            gap: 15px;
-            margin-top: 25px;
-            flex-wrap: wrap;
-        }
-
-        .info-card {
-            flex: 1;
-            min-width: 150px;
-            background: linear-gradient(135deg, #f5f5f5 0%, #ffffff 100%);
-            border-radius: 20px;
-            padding: 18px 15px;
-            text-align: center;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            transition: all 0.3s ease;
-            border: 1px solid rgba(0,0,0,0.05);
-        }
-
-        .info-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-        }
-
-        .info-card i {
-            font-size: 1.8rem;
-            margin-bottom: 10px;
-            color: #C41E3A;
-        }
-
-        .info-card .label {
-            font-size: 0.85rem;
-            color: #888;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-weight: 500;
-        }
-
-        .info-card .value {
-            font-size: 1.4rem;
-            font-weight: 700;
-            color: #1a1a2e;
-            margin-top: 5px;
-        }
-
-        /* Result Display */
-        .result-container {
-            margin-top: 30px;
-            display: none;
-            animation: fadeIn 0.5s ease-out;
-        }
-
-        .result-container.show {
-            display: block;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        .result-header {
-            text-align: center;
-            margin-bottom: 25px;
-        }
-
-        .result-badge {
-            display: inline-block;
-            padding: 8px 20px;
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-            color: white;
-            border-radius: 60px;
-            font-weight: 600;
-            font-size: 1rem;
-            margin-bottom: 15px;
-        }
-
-        .birthday-display {
-            background: linear-gradient(135deg, #8D1B3D 0%, #C41E3A 100%);
-            border-radius: 25px;
-            padding: 30px;
-            text-align: center;
-            margin-bottom: 25px;
-            box-shadow: 0 10px 30px rgba(141, 27, 61, 0.3);
-        }
-
-        .birthday-display .date-large {
-            font-size: 3.5rem;
-            font-weight: 700;
-            color: #FFD700;
-            text-shadow: 2px 2px 0px rgba(0,0,0,0.2);
-            letter-spacing: 2px;
-        }
-
-        .birthday-display .date-full {
-            font-size: 1.2rem;
-            color: rgba(255,255,255,0.9);
-            margin-top: 5px;
-        }
-
-        .detail-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 15px;
-        }
-
-        .detail-item {
-            background: white;
-            border-radius: 15px;
-            padding: 20px;
-            text-align: center;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            transition: all 0.3s ease;
-            border: 1px solid #eee;
-        }
-
-        .detail-item:hover {
-            transform: scale(1.02);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-        }
-
-        .detail-item i {
-            font-size: 2rem;
-            margin-bottom: 12px;
-        }
-
-        .detail-item .detail-label {
-            font-size: 0.85rem;
-            color: #888;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .detail-item .detail-value {
-            font-size: 1.3rem;
-            font-weight: 600;
-            color: #1a1a2e;
-        }
-
-        .gender-male { color: #2196F3; }
-        .gender-female { color: #E91E63; }
-
-        /* Error Message */
-        .error-message {
-            background: linear-gradient(135deg, #fee 0%, #fdd 100%);
-            border-left: 5px solid #dc3545;
-            border-radius: 15px;
-            padding: 20px;
-            margin-top: 20px;
-            color: #842029;
-            font-weight: 500;
-            display: none;
-        }
-
-        .error-message.show {
-            display: block;
-        }
-
-        .error-message i {
-            margin-right: 10px;
-            color: #dc3545;
-        }
-
-        /* Examples Section */
-        .examples-section {
-            margin-top: 25px;
-            padding: 20px;
-            background: rgba(141, 27, 61, 0.05);
-            border-radius: 20px;
-        }
-
-        .examples-title {
-            font-weight: 600;
-            margin-bottom: 15px;
-            color: #1a1a2e;
-        }
-
-        .example-badge {
-            display: inline-block;
-            padding: 8px 18px;
-            margin: 5px 8px 5px 0;
-            background: white;
-            border-radius: 60px;
-            font-size: 0.95rem;
-            font-family: monospace;
-            cursor: pointer;
-            transition: all 0.2s;
-            border: 1px solid #ddd;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        }
-
-        .example-badge:hover {
-            background: #8D1B3D;
-            color: white;
-            border-color: #8D1B3D;
-            transform: scale(1.05);
-        }
-
-        .example-badge i {
-            margin-right: 5px;
-            font-size: 0.8rem;
-        }
-
-        /* Loading Spinner */
-        .loading-spinner {
-            text-align: center;
-            padding: 30px;
-            display: none;
-        }
-
-        .loading-spinner.show {
-            display: block;
-        }
-
-        .spinner {
-            width: 50px;
-            height: 50px;
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #8D1B3D;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 15px;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        /* Footer */
-        .footer {
-            text-align: center;
-            color: rgba(255,255,255,0.7);
-            margin-top: 30px;
-            font-size: 0.9rem;
-        }
-
-        .footer i {
-            color: #FFD700;
-            margin: 0 3px;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .main-header h1 {
-                font-size: 2rem;
-            }
-            
-            .birthday-display .date-large {
-                font-size: 2.5rem;
-            }
-            
-            .card-body {
-                padding: 25px 20px;
-            }
-        }
-    </style>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+	<title>Sri Lanka NIC Extractor</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+			font-family: 'Inter', sans-serif;
+		}
+
+		body {
+			background: #F3F7EC;
+			min-height: 100vh;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			padding: 16px;
+		}
+
+		.main-wrapper {
+			max-width: 480px;
+			width: 100%;
+			margin: 0 auto;
+		}
+
+		.header-section {
+			text-align: center;
+			margin-bottom: 20px;
+			animation: slideDown 0.5s ease-out;
+		}
+
+		@keyframes slideDown {
+			0% { opacity: 0; transform: translateY(-20px); }
+			100% { opacity: 1; transform: translateY(0); }
+		}
+
+		.flag-colors {
+			display: flex;
+			justify-content: center;
+			gap: 4px;
+			margin-bottom: 12px;
+		}
+
+		.flag-colors span {
+			width: 40px;
+			height: 4px;
+			border-radius: 4px;
+		}
+
+		.flag-maroon { background: #8D1B3D; }
+		.flag-orange { background: #FF8200; }
+		.flag-green { background: #00534E; }
+		.flag-yellow { background: #FFD700; }
+
+		.header-section h2 {
+			color: #005C78;
+			font-weight: 600;
+			font-size: 1.5rem;
+			letter-spacing: -0.5px;
+		}
+
+		.header-section p {
+			color: #006989;
+			font-size: 0.85rem;
+			font-weight: 400;
+			margin-top: 4px;
+		}
+
+		.lion-badge {
+			display: inline-flex;
+			align-items: center;
+			gap: 6px;
+			background: rgba(0, 105, 137, 0.08);
+			padding: 4px 12px;
+			border-radius: 30px;
+			margin-top: 8px;
+		}
+
+		.lion-badge i {
+			color: #E88D67;
+			font-size: 0.9rem;
+		}
+
+		.lion-badge span {
+			color: #005C78;
+			font-size: 0.8rem;
+			font-weight: 500;
+		}
+
+		.card-main {
+			background: #FFFFFF;
+			border-radius: 20px;
+			box-shadow: 0 4px 20px rgba(0, 92, 120, 0.08);
+			overflow: hidden;
+			animation: fadeUp 0.6s ease-out;
+			border: 1px solid rgba(0, 105, 137, 0.1);
+		}
+
+		@keyframes fadeUp {
+			0% { opacity: 0; transform: translateY(20px); }
+			100% { opacity: 1; transform: translateY(0); }
+		}
+
+		.card-header-main {
+			background: linear-gradient(135deg, #005C78 0%, #006989 100%);
+			padding: 18px 20px;
+		}
+
+		.card-header-main h3 {
+			color: #F3F7EC;
+			font-weight: 600;
+			font-size: 1.2rem;
+			margin: 0;
+			display: flex;
+			align-items: center;
+			gap: 10px;
+		}
+
+		.card-header-main h3 i {
+			color: #E88D67;
+			font-size: 1.1rem;
+		}
+
+		.card-body-main {
+			padding: 20px;
+		}
+
+		.input-group-custom {
+			position: relative;
+			margin-bottom: 16px;
+		}
+
+		.input-group-custom i {
+			position: absolute;
+			left: 16px;
+			top: 50%;
+			transform: translateY(-50%);
+			color: #E88D67;
+			font-size: 1rem;
+			z-index: 10;
+		}
+
+		.input-field {
+			width: 100%;
+			padding: 14px 16px 14px 46px;
+			font-size: 0.95rem;
+			border: 1.5px solid rgba(0, 105, 137, 0.15);
+			border-radius: 14px;
+			background: #F3F7EC;
+			color: #005C78;
+			font-weight: 500;
+			transition: all 0.3s ease;
+			outline: none;
+		}
+
+		.input-field:focus {
+			border-color: #E88D67;
+			background: #FFFFFF;
+			box-shadow: 0 0 0 4px rgba(232, 141, 103, 0.1);
+		}
+
+		.input-field::placeholder {
+			color: rgba(0, 92, 120, 0.4);
+			font-weight: 400;
+			font-size: 0.85rem;
+		}
+
+		.btn-primary-custom {
+			width: 100%;
+			padding: 14px 20px;
+			background: linear-gradient(135deg, #E88D67 0%, #d47a54 100%);
+			border: none;
+			border-radius: 14px;
+			color: #FFFFFF;
+			font-weight: 600;
+			font-size: 1rem;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			gap: 10px;
+			cursor: pointer;
+			transition: all 0.3s ease;
+			box-shadow: 0 4px 12px rgba(232, 141, 103, 0.3);
+		}
+
+		.btn-primary-custom:hover {
+			transform: translateY(-2px);
+			box-shadow: 0 6px 18px rgba(232, 141, 103, 0.4);
+			background: linear-gradient(135deg, #d47a54 0%, #E88D67 100%);
+		}
+
+		.btn-primary-custom i {
+			font-size: 1rem;
+		}
+
+		.examples-row {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 8px;
+			margin-top: 16px;
+			padding-top: 16px;
+			border-top: 1px solid rgba(0, 105, 137, 0.1);
+		}
+
+		.example-chip {
+			background: #F3F7EC;
+			padding: 8px 14px;
+			border-radius: 30px;
+			font-size: 0.8rem;
+			font-weight: 500;
+			color: #005C78;
+			cursor: pointer;
+			transition: all 0.25s ease;
+			border: 1px solid rgba(0, 105, 137, 0.1);
+			display: inline-flex;
+			align-items: center;
+			gap: 6px;
+		}
+
+		.example-chip:hover {
+			background: #E88D67;
+			color: #FFFFFF;
+			border-color: #E88D67;
+			transform: scale(1.02);
+			box-shadow: 0 4px 10px rgba(232, 141, 103, 0.25);
+		}
+
+		.example-chip i {
+			font-size: 0.7rem;
+		}
+
+		.info-badges {
+			display: flex;
+			gap: 10px;
+			margin-top: 16px;
+		}
+
+		.info-badge {
+			flex: 1;
+			background: #F3F7EC;
+			padding: 10px 8px;
+			border-radius: 12px;
+			text-align: center;
+			transition: all 0.25s ease;
+			border: 1px solid rgba(0, 105, 137, 0.08);
+		}
+
+		.info-badge:hover {
+			transform: translateY(-3px);
+			box-shadow: 0 6px 14px rgba(0, 92, 120, 0.08);
+			background: #FFFFFF;
+			border-color: #E88D67;
+		}
+
+		.info-badge i {
+			color: #E88D67;
+			font-size: 1.1rem;
+			margin-bottom: 4px;
+		}
+
+		.info-badge .badge-label {
+			font-size: 0.65rem;
+			color: #006989;
+			text-transform: uppercase;
+			font-weight: 600;
+			letter-spacing: 0.3px;
+		}
+
+		.info-badge .badge-value {
+			font-size: 0.9rem;
+			font-weight: 700;
+			color: #005C78;
+		}
+
+		.loader-wrapper {
+			text-align: center;
+			padding: 24px;
+			display: none;
+		}
+
+		.loader-wrapper.show {
+			display: block;
+		}
+
+		.loader-spinner {
+			width: 36px;
+			height: 36px;
+			border: 3px solid rgba(0, 105, 137, 0.1);
+			border-top: 3px solid #E88D67;
+			border-radius: 50%;
+			animation: spin 0.8s linear infinite;
+			margin: 0 auto 10px;
+		}
+
+		@keyframes spin {
+			0% { transform: rotate(0deg); }
+			100% { transform: rotate(360deg); }
+		}
+
+		.loader-wrapper p {
+			color: #006989;
+			font-size: 0.8rem;
+		}
+
+		.result-panel {
+			margin-top: 20px;
+			display: none;
+			animation: fadeIn 0.4s ease;
+		}
+
+		.result-panel.show {
+			display: block;
+		}
+
+		@keyframes fadeIn {
+			0% { opacity: 0; }
+			100% { opacity: 1; }
+		}
+
+		.result-birthday-card {
+			background: linear-gradient(135deg, #005C78 0%, #006989 100%);
+			border-radius: 16px;
+			padding: 20px;
+			text-align: center;
+			margin-bottom: 16px;
+		}
+
+		.result-birthday-card .birthday-main {
+			font-size: 2.2rem;
+			font-weight: 700;
+			color: #E88D67;
+			letter-spacing: 1px;
+		}
+
+		.result-birthday-card .birthday-sub {
+			font-size: 0.9rem;
+			color: #F3F7EC;
+			opacity: 0.9;
+			margin-top: 4px;
+		}
+
+		.result-grid {
+			display: grid;
+			grid-template-columns: repeat(2, 1fr);
+			gap: 10px;
+		}
+
+		.result-item {
+			background: #F3F7EC;
+			padding: 14px 10px;
+			border-radius: 12px;
+			text-align: center;
+			transition: all 0.25s ease;
+			border: 1px solid rgba(0, 105, 137, 0.08);
+		}
+
+		.result-item:hover {
+			transform: translateY(-2px);
+			box-shadow: 0 6px 14px rgba(0, 92, 120, 0.08);
+			background: #FFFFFF;
+			border-color: #E88D67;
+		}
+
+		.result-item i {
+			color: #E88D67;
+			font-size: 1.1rem;
+			margin-bottom: 6px;
+		}
+
+		.result-item .item-label {
+			font-size: 0.65rem;
+			color: #006989;
+			text-transform: uppercase;
+			font-weight: 600;
+			letter-spacing: 0.3px;
+		}
+
+		.result-item .item-value {
+			font-size: 0.9rem;
+			font-weight: 700;
+			color: #005C78;
+		}
+
+		.gender-male { color: #006989; }
+		.gender-female { color: #E88D67; }
+
+		.footer-section {
+			text-align: center;
+			margin-top: 20px;
+			color: #006989;
+			font-size: 0.75rem;
+		}
+
+		.footer-section i {
+			color: #E88D67;
+			margin: 0 3px;
+		}
+
+		@media (max-width: 379px) {
+			body { padding: 10px; }
+			.card-body-main { padding: 16px; }
+			.header-section h2 { font-size: 1.3rem; }
+			.input-field { padding: 12px 12px 12px 42px; font-size: 0.85rem; }
+			.btn-primary-custom { padding: 12px 16px; font-size: 0.9rem; }
+			.result-birthday-card .birthday-main { font-size: 1.8rem; }
+			.result-grid { grid-template-columns: 1fr; }
+		}
+
+		@media (min-width: 380px) and (max-width: 480px) {
+			body { padding: 12px; }
+			.result-birthday-card .birthday-main { font-size: 2rem; }
+		}
+
+		@media (min-width: 481px) and (max-width: 575px) {
+			body { padding: 16px; }
+		}
+
+		@media (min-width: 576px) and (max-width: 767px) {
+			.main-wrapper { max-width: 520px; }
+		}
+
+		@media (min-width: 768px) and (max-width: 991px) {
+			.main-wrapper { max-width: 560px; }
+		}
+
+		@media (min-width: 992px) and (max-width: 999px) {
+			.main-wrapper { max-width: 580px; }
+		}
+
+		@media (min-width: 1000px) and (max-width: 1199px) {
+			.main-wrapper { max-width: 600px; }
+		}
+
+		@media (min-width: 1200px) and (max-width: 1399px) {
+			.main-wrapper { max-width: 620px; }
+		}
+
+		@media (min-width: 1400px) and (max-width: 1500px) {
+			.main-wrapper { max-width: 640px; }
+		}
+
+		@media (min-width: 1501px) and (max-width: 2559px) {
+			.main-wrapper { max-width: 660px; }
+		}
+
+		@media (min-width: 2560px) {
+			.main-wrapper { max-width: 720px; }
+			.input-field { padding: 18px 18px 18px 50px; font-size: 1.1rem; }
+			.btn-primary-custom { padding: 18px 24px; font-size: 1.2rem; }
+		}
+	</style>
 </head>
 <body>
-    <div class="container">
-        <!-- Header -->
-        <div class="main-header">
-            <div class="flag-stripe">
-                <span class="flag-maroon"></span>
-                <span class="flag-orange"></span>
-                <span class="flag-green"></span>
-                <span class="flag-yellow"></span>
-            </div>
-            <h1>
-                <i class="fas fa-id-card"></i>
-                NIC Birthday Extractor
-                <i class="fas fa-id-card"></i>
-            </h1>
-            <p>
-                <span class="lion-icon">🦁</span> 
-                Sri Lanka National Identity Card 
-                <span class="lion-icon">🦁</span>
-            </p>
-        </div>
+	<div class="main-wrapper">
+		<div class="header-section">
+			<div class="flag-colors">
+				<span class="flag-maroon"></span>
+				<span class="flag-orange"></span>
+				<span class="flag-green"></span>
+				<span class="flag-yellow"></span>
+			</div>
+			<h2>
+				<i class="fas fa-id-card" style="color: #E88D67;"></i>
+				NIC Extractor
+				<i class="fas fa-id-card" style="color: #E88D67;"></i>
+			</h2>
+			<p>Sri Lanka National Identity Card</p>
+			<div class="lion-badge">
+				<i class="fas fa-crown"></i>
+				<span>Decode Birthday Instantly</span>
+				<i class="fas fa-crown"></i>
+			</div>
+		</div>
 
-        <!-- Main Card -->
-        <div class="card">
-            <div class="card-header">
-                <h3><i class="fas fa-cake-candles"></i> Extract Birthday from NIC</h3>
-            </div>
-            <div class="card-body">
-                <form id="nicForm">
-                    <div class="nic-input-wrapper">
-                        <span class="input-icon"><i class="fas fa-qrcode"></i></span>
-                        <input 
-                            type="text" 
-                            class="form-control" 
-                            name="nic" 
-                            id="nicInput"
-                            placeholder="Enter NIC Number (e.g., 911042754V or 199110402754)"
-                            autocomplete="off"
-                            required
-                        >
-                    </div>
-                    <button type="submit" class="btn-extract">
-                        <i class="fas fa-magnifying-glass"></i> Extract Birthday
-                    </button>
-                </form>
+		<div class="card-main">
+			<div class="card-header-main">
+				<h3>
+					<i class="fas fa-cake-candles"></i>
+					Extract Birthday
+				</h3>
+			</div>
+			<div class="card-body-main">
+				<form id="nicForm">
+					<div class="input-group-custom">
+						<i class="fas fa-qrcode"></i>
+						<input 
+							type="text" 
+							class="input-field" 
+							name="nic" 
+							id="nicInput"
+							placeholder="e.g., 911042754V or 199110402754"
+							autocomplete="off"
+							required
+						>
+					</div>
+					<button type="submit" class="btn-primary-custom">
+						<i class="fas fa-magnifying-glass"></i> Extract Birthday
+					</button>
+				</form>
 
-                <!-- Examples -->
-                <div class="examples-section">
-                    <div class="examples-title">
-                        <i class="fas fa-lightbulb"></i> Try these examples:
-                    </div>
-                    <div>
-                        <span class="example-badge" onclick="setExample('911042754V')">
-                            <i class="fas fa-male gender-male"></i> 911042754V (Old)
-                        </span>
-                        <span class="example-badge" onclick="setExample('199110402754')">
-                            <i class="fas fa-male gender-male"></i> 199110402754 (New)
-                        </span>
-                        <span class="example-badge" onclick="setExample('917042754V')">
-                            <i class="fas fa-female gender-female"></i> 917042754V (Old)
-                        </span>
-                        <span class="example-badge" onclick="setExample('199160402754')">
-                            <i class="fas fa-female gender-female"></i> 199160402754 (New)
-                        </span>
-                    </div>
-                </div>
+				<div class="examples-row">
+					<span class="example-chip" onclick="setExample('911042754V')">
+						<i class="fas fa-male"></i> 911042754V
+					</span>
+					<span class="example-chip" onclick="setExample('199110402754')">
+						<i class="fas fa-male"></i> 199110402754
+					</span>
+					<span class="example-chip" onclick="setExample('917042754V')">
+						<i class="fas fa-female"></i> 917042754V
+					</span>
+					<span class="example-chip" onclick="setExample('199160402754')">
+						<i class="fas fa-female"></i> 199160402754
+					</span>
+				</div>
 
-                <!-- Info Cards -->
-                <div class="info-row">
-                    <div class="info-card">
-                        <i class="fas fa-calendar"></i>
-                        <div class="label">Old Format</div>
-                        <div class="value">9 digits + V/X</div>
-                    </div>
-                    <div class="info-card">
-                        <i class="fas fa-calendar-alt"></i>
-                        <div class="label">New Format</div>
-                        <div class="value">12 digits</div>
-                    </div>
-                    <div class="info-card">
-                        <i class="fas fa-venus-mars"></i>
-                        <div class="label">Gender Code</div>
-                        <div class="value">>500 = Female</div>
-                    </div>
-                </div>
+				<div class="info-badges">
+					<div class="info-badge">
+						<i class="fas fa-calendar"></i>
+						<div class="badge-label">Old Format</div>
+						<div class="badge-value">9 digits + V/X</div>
+					</div>
+					<div class="info-badge">
+						<i class="fas fa-calendar-alt"></i>
+						<div class="badge-label">New Format</div>
+						<div class="badge-value">12 digits</div>
+					</div>
+					<div class="info-badge">
+						<i class="fas fa-venus-mars"></i>
+						<div class="badge-label">Gender Code</div>
+						<div class="badge-value">&gt;500 = Female</div>
+					</div>
+				</div>
 
-                <!-- Loading Spinner -->
-                <div class="loading-spinner" id="loadingSpinner">
-                    <div class="spinner"></div>
-                    <p style="color: #666;">Processing NIC...</p>
-                </div>
+				<div class="loader-wrapper" id="loadingSpinner">
+					<div class="loader-spinner"></div>
+					<p>Processing NIC...</p>
+				</div>
 
-                <!-- Error Message -->
-                <div class="error-message" id="errorMessage">
-                    <i class="fas fa-exclamation-triangle"></i>
-                    <span id="errorText"></span>
-                </div>
+				<div class="result-panel" id="resultContainer">
+					<div class="result-birthday-card">
+						<div class="birthday-main" id="birthdayDmy">--</div>
+						<div class="birthday-sub">
+							<i class="fas fa-star" style="color: #E88D67; font-size: 0.6rem;"></i>
+							<span id="birthdayFullText">--</span>
+							<i class="fas fa-star" style="color: #E88D67; font-size: 0.6rem;"></i>
+						</div>
+					</div>
 
-                <!-- Result Display -->
-                <div class="result-container" id="resultContainer">
-                    <div class="result-header">
-                        <span class="result-badge">
-                            <i class="fas fa-check-circle"></i> Extraction Successful
-                        </span>
-                    </div>
-                    
-                    <div class="birthday-display">
-                        <div class="date-large" id="birthdayDmy">--</div>
-                        <div class="date-full" id="birthdayFull">
-                            <i class="fas fa-star" style="color: #FFD700;"></i> 
-                            <span id="birthdayFullText">--</span>
-                            <i class="fas fa-star" style="color: #FFD700;"></i>
-                        </div>
-                    </div>
+					<div class="result-grid">
+						<div class="result-item">
+							<i class="fas fa-id-card"></i>
+							<div class="item-label">NIC Type</div>
+							<div class="item-value" id="nicType">--</div>
+						</div>
+						<div class="result-item">
+							<i class="fas fa-cake-candles"></i>
+							<div class="item-label">Age</div>
+							<div class="item-value" id="age">--</div>
+						</div>
+						<div class="result-item">
+							<i class="fas fa-mars" id="genderIcon"></i>
+							<div class="item-label">Gender</div>
+							<div class="item-value" id="gender">--</div>
+						</div>
+						<div class="result-item">
+							<i class="fas fa-calendar-day"></i>
+							<div class="item-label">Day of Week</div>
+							<div class="item-value" id="dayOfWeek">--</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 
-                    <div class="detail-grid">
-                        <div class="detail-item">
-                            <i class="fas fa-id-card" style="color: #8D1B3D;"></i>
-                            <div class="detail-label">NIC Type</div>
-                            <div class="detail-value" id="nicType" style="font-size: 0.95rem;">--</div>
-                        </div>
-                        
-                        <div class="detail-item">
-                            <i class="fas fa-cake-candles" style="color: #FF6B35;"></i>
-                            <div class="detail-label">Age</div>
-                            <div class="detail-value" id="age">--</div>
-                        </div>
-                        
-                        <div class="detail-item">
-                            <i class="fas fa-mars" id="genderIcon" style="color: #2196F3;"></i>
-                            <div class="detail-label">Gender</div>
-                            <div class="detail-value" id="gender">--</div>
-                        </div>
-                        
-                        <div class="detail-item">
-                            <i class="fas fa-calendar-day" style="color: #10b981;"></i>
-                            <div class="detail-label">Day of Week</div>
-                            <div class="detail-value" id="dayOfWeek">--</div>
-                        </div>
-                        
-                        <div class="detail-item">
-                            <span id="zodiacEmoji" style="font-size: 2rem;">--</span>
-                            <div class="detail-label">Zodiac Sign</div>
-                            <div class="detail-value" id="zodiac">--</div>
-                        </div>
-                        
-                        <div class="detail-item">
-                            <i class="fas fa-calendar-week" style="color: #6366f1;"></i>
-                            <div class="detail-label">ISO Format</div>
-                            <div class="detail-value" id="birthdayYmd" style="font-size: 1rem;">--</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+		<div class="footer-section">
+			<p>
+				<i class="fas fa-code"></i>
+				Developed by R.Abishigan 
+				<i class="far fa-copyright"></i> 2026
+				<i class="fas fa-heart"></i>
+			</p>
+		</div>
+	</div>
 
-        <!-- Footer -->
-        <div class="footer">
-            <p>
-                <i class="fas fa-heart"></i> 
-                Made for Sri Lanka 
-                <i class="fas fa-heart"></i>
-                <br>
-                <small>Supports both Old (9 digits + V/X) and New (12 digits) NIC formats</small>
-            </p>
-        </div>
-    </div>
+	<script>
+		function extractBirthdayFromNIC(nic) {
+			nic = nic.toUpperCase().trim();
+			let year, days, nicType;
+			if (/^[0-9]{9}[VX]$/.test(nic)) {
+				year = 1900 + parseInt(nic.substring(0, 2));
+				days = parseInt(nic.substring(2, 5));
+				nicType = 'Old Format (9 digits + letter)';
+			} else if (/^[0-9]{12}$/.test(nic)) {
+				year = parseInt(nic.substring(0, 4));
+				days = parseInt(nic.substring(4, 7));
+				nicType = 'New Format (12 digits)';
+			} else {
+				throw new Error('Invalid NIC format! Use format: 123456789V (Old) or 199012345678 (New)');
+			}
+			const gender = days > 500 ? 'Female' : 'Male';
+			if (days > 500) days -= 500;
+			if (days < 1 || days > 366) throw new Error('Invalid day value in NIC!');
+			const baseDate = new Date(2024, 0, 1);
+			baseDate.setDate(baseDate.getDate() + (days - 1));
+			const month = baseDate.getMonth() + 1;
+			const day = baseDate.getDate();
+			const monthName = baseDate.toLocaleString('default', { month: 'long' });
+			const birthDate = new Date(year, month - 1, day);
+			if (birthDate.getMonth() + 1 !== month) throw new Error('Invalid date for the given year!');
+			const today = new Date();
+			let age = today.getFullYear() - year;
+			const monthDiff = today.getMonth() - (month - 1);
+			if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < day)) age--;
+			const dayOfWeek = birthDate.toLocaleString('default', { weekday: 'long' });
+			const birthdayDmy = `${String(day).padStart(2, '0')}-${String(month).padStart(2, '0')}-${year}`;
+			const birthdayFull = `${day} ${monthName} ${year}`;
+			return { success: true, nic, nicType, birthdayDmy, birthdayFull, year, month, day, monthName, gender, age, dayOfWeek };
+		}
 
-    <script>
-        // Zodiac sign calculation
-        function getZodiacSign(month, day) {
-            const zodiacs = [
-                { name: 'Capricorn', start: [12, 22], end: [1, 19] },
-                { name: 'Aquarius', start: [1, 20], end: [2, 18] },
-                { name: 'Pisces', start: [2, 19], end: [3, 20] },
-                { name: 'Aries', start: [3, 21], end: [4, 19] },
-                { name: 'Taurus', start: [4, 20], end: [5, 20] },
-                { name: 'Gemini', start: [5, 21], end: [6, 20] },
-                { name: 'Cancer', start: [6, 21], end: [7, 22] },
-                { name: 'Leo', start: [7, 23], end: [8, 22] },
-                { name: 'Virgo', start: [8, 23], end: [9, 22] },
-                { name: 'Libra', start: [9, 23], end: [10, 22] },
-                { name: 'Scorpio', start: [10, 23], end: [11, 21] },
-                { name: 'Sagittarius', start: [11, 22], end: [12, 21] },
-                { name: 'Capricorn', start: [12, 22], end: [12, 31] }
-            ];
+		function displayResult(data) {
+			document.getElementById('birthdayDmy').textContent = data.birthdayDmy;
+			document.getElementById('birthdayFullText').textContent = data.birthdayFull;
+			document.getElementById('nicType').textContent = data.nicType;
+			document.getElementById('age').textContent = data.age + ' years';
+			document.getElementById('gender').textContent = data.gender;
+			document.getElementById('dayOfWeek').textContent = data.dayOfWeek;
+			const genderIcon = document.getElementById('genderIcon');
+			const genderValue = document.getElementById('gender');
+			if (data.gender === 'Male') {
+				genderIcon.className = 'fas fa-mars';
+				genderIcon.style.color = '#006989';
+				genderValue.className = 'item-value gender-male';
+			} else {
+				genderIcon.className = 'fas fa-venus';
+				genderIcon.style.color = '#E88D67';
+				genderValue.className = 'item-value gender-female';
+			}
+			document.getElementById('resultContainer').classList.add('show');
+			Swal.fire({
+				title: 'Success!',
+				text: 'Birthday extracted successfully!',
+				icon: 'success',
+				confirmButtonColor: '#E88D67',
+				background: '#F3F7EC',
+				color: '#005C78'
+			});
+		}
 
-            for (let zodiac of zodiacs) {
-                if ((month === zodiac.start[0] && day >= zodiac.start[1]) ||
-                    (month === zodiac.end[0] && day <= zodiac.end[1])) {
-                    return zodiac.name;
-                }
-            }
-            return 'Unknown';
-        }
+		function displayError(message) {
+			document.getElementById('resultContainer').classList.remove('show');
+			Swal.fire({
+				title: 'Error!',
+				text: message,
+				icon: 'error',
+				confirmButtonColor: '#E88D67',
+				background: '#F3F7EC',
+				color: '#005C78'
+			});
+		}
 
-        // Zodiac emoji mapping
-        function getZodiacEmoji(sign) {
-            const emojis = {
-                'Capricorn': '♑', 'Aquarius': '♒', 'Pisces': '♓',
-                'Aries': '♈', 'Taurus': '♉', 'Gemini': '♊',
-                'Cancer': '♋', 'Leo': '♌', 'Virgo': '♍',
-                'Libra': '♎', 'Scorpio': '♏', 'Sagittarius': '♐'
-            };
-            return emojis[sign] || '--';
-        }
+		function setExample(nic) {
+			document.getElementById('nicInput').value = nic;
+			document.getElementById('nicForm').dispatchEvent(new Event('submit'));
+		}
 
-        // Extract birthday from NIC
-        function extractBirthdayFromNIC(nic) {
-            nic = nic.toUpperCase().trim();
-            let year, days, nicType;
+		document.getElementById('nicForm').addEventListener('submit', function(e) {
+			e.preventDefault();
+			const nic = document.getElementById('nicInput').value.trim();
+			document.getElementById('resultContainer').classList.remove('show');
+			document.getElementById('loadingSpinner').classList.add('show');
+			setTimeout(() => {
+				try {
+					const result = extractBirthdayFromNIC(nic);
+					displayResult(result);
+				} catch (error) {
+					displayError(error.message);
+				} finally {
+					document.getElementById('loadingSpinner').classList.remove('show');
+					const resultEl = document.querySelector('.result-panel.show');
+					if (resultEl) resultEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+				}
+			}, 300);
+		});
 
-            // Determine format
-            if (/^[0-9]{9}[VX]$/.test(nic)) {
-                year = 1900 + parseInt(nic.substring(0, 2));
-                days = parseInt(nic.substring(2, 5));
-                nicType = 'Old Format (9 digits + letter)';
-            } else if (/^[0-9]{12}$/.test(nic)) {
-                year = parseInt(nic.substring(0, 4));
-                days = parseInt(nic.substring(4, 7));
-                nicType = 'New Format (12 digits)';
-            } else {
-                throw new Error('Invalid NIC format! Use format: 123456789V (Old) or 199012345678 (New)');
-            }
+		document.getElementById('nicInput').addEventListener('input', function() {
+			this.value = this.value.toUpperCase();
+		});
 
-            // Determine gender
-            const gender = days > 500 ? 'Female' : 'Male';
-            if (days > 500) {
-                days -= 500;
-            }
-
-            // Validate day range
-            if (days < 1 || days > 366) {
-                throw new Error('Invalid day value in NIC!');
-            }
-
-            // Calculate date using leap year base (2024 is leap year)
-            const baseDate = new Date(2024, 0, 1);
-            baseDate.setDate(baseDate.getDate() + (days - 1));
-            
-            const month = baseDate.getMonth() + 1;
-            const day = baseDate.getDate();
-            const monthName = baseDate.toLocaleString('default', { month: 'long' });
-
-            // Validate date for actual year
-            const birthDate = new Date(year, month - 1, day);
-            if (birthDate.getMonth() + 1 !== month) {
-                throw new Error('Invalid date for the given year!');
-            }
-
-            // Calculate age
-            const today = new Date();
-            let age = today.getFullYear() - year;
-            const monthDiff = today.getMonth() - (month - 1);
-            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < day)) {
-                age--;
-            }
-
-            // Get zodiac sign and day of week
-            const zodiacSign = getZodiacSign(month, day);
-            const dayOfWeek = birthDate.toLocaleString('default', { weekday: 'long' });
-
-            // Format dates
-            const birthdayYmd = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-            const birthdayDmy = `${String(day).padStart(2, '0')}-${String(month).padStart(2, '0')}-${year}`;
-            const birthdayFull = `${day} ${monthName} ${year}`;
-
-            return {
-                success: true,
-                nic: nic,
-                nicType: nicType,
-                birthdayYmd: birthdayYmd,
-                birthdayDmy: birthdayDmy,
-                birthdayFull: birthdayFull,
-                year: year,
-                month: month,
-                day: day,
-                monthName: monthName,
-                gender: gender,
-                age: age,
-                zodiac: zodiacSign,
-                dayOfWeek: dayOfWeek
-            };
-        }
-
-        // Display result
-        function displayResult(data) {
-            document.getElementById('birthdayDmy').textContent = data.birthdayDmy;
-            document.getElementById('birthdayFullText').textContent = data.birthdayFull;
-            document.getElementById('nicType').textContent = data.nicType;
-            document.getElementById('age').textContent = data.age + ' years';
-            document.getElementById('gender').textContent = data.gender;
-            document.getElementById('dayOfWeek').textContent = data.dayOfWeek;
-            document.getElementById('zodiac').textContent = data.zodiac;
-            document.getElementById('zodiacEmoji').textContent = getZodiacEmoji(data.zodiac);
-            document.getElementById('birthdayYmd').textContent = data.birthdayYmd;
-
-            // Update gender icon
-            const genderIcon = document.getElementById('genderIcon');
-            const genderValue = document.getElementById('gender');
-            if (data.gender === 'Male') {
-                genderIcon.className = 'fas fa-mars';
-                genderIcon.style.color = '#2196F3';
-                genderValue.className = 'detail-value gender-male';
-            } else {
-                genderIcon.className = 'fas fa-venus';
-                genderIcon.style.color = '#E91E63';
-                genderValue.className = 'detail-value gender-female';
-            }
-
-            // Show result container
-            document.getElementById('resultContainer').classList.add('show');
-            document.getElementById('errorMessage').classList.remove('show');
-        }
-
-        // Display error
-        function displayError(message) {
-            document.getElementById('errorText').textContent = message;
-            document.getElementById('errorMessage').classList.add('show');
-            document.getElementById('resultContainer').classList.remove('show');
-        }
-
-        // Set example NIC
-        function setExample(nic) {
-            document.getElementById('nicInput').value = nic;
-            document.getElementById('nicForm').dispatchEvent(new Event('submit'));
-        }
-
-        // Handle form submission
-        document.getElementById('nicForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const nic = document.getElementById('nicInput').value.trim();
-            
-            // Hide previous results
-            document.getElementById('resultContainer').classList.remove('show');
-            document.getElementById('errorMessage').classList.remove('show');
-            document.getElementById('loadingSpinner').classList.add('show');
-            
-            // Simulate processing delay
-            setTimeout(() => {
-                try {
-                    const result = extractBirthdayFromNIC(nic);
-                    displayResult(result);
-                } catch (error) {
-                    displayError(error.message);
-                } finally {
-                    document.getElementById('loadingSpinner').classList.remove('show');
-                    
-                    // Smooth scroll to result
-                    const resultEl = document.querySelector('.result-container.show') || document.querySelector('.error-message.show');
-                    if (resultEl) {
-                        resultEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-                    }
-                }
-            }, 300);
-        });
-
-        // Auto-uppercase for NIC input
-        document.getElementById('nicInput').addEventListener('input', function() {
-            this.value = this.value.toUpperCase();
-        });
-
-        // Allow Enter key to submit
-        document.getElementById('nicInput').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                document.getElementById('nicForm').dispatchEvent(new Event('submit'));
-            }
-        });
-    </script>
+		document.getElementById('nicInput').addEventListener('keypress', function(e) {
+			if (e.key === 'Enter') {
+				e.preventDefault();
+				document.getElementById('nicForm').dispatchEvent(new Event('submit'));
+			}
+		});
+	</script>
 </body>
 </html>
